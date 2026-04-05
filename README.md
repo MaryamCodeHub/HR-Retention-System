@@ -1,76 +1,110 @@
-# HR-Retention-System
-Built a machine learning system to predict employee attrition using HR data. Performed EDA, feature engineering, and trained classification models including Random Forest. Provided actionable HR insights to improve employee retention and workforce planning.
+# Predictive HR Attrition & Analytics API
 
-## Project Overview
-This project analyzes HR data from Salifort Motors to predict whether an employee is likely to leave the company. By using machine learning models and data-driven insights, this project helps HR teams identify key factors contributing to employee attrition and improve retention strategies.
+Welcome to the **Predictive HR Attrition** system. This project transitions standard HR data analytics into a robust, production-grade machine learning microservice. It provides not just predictions on whether an employee will leave, but **explainable insights (SHAP)** describing exactly *why* they might leave.
 
-## Objectives
+## 🏗 System Architecture & Data Flow
 
-- Predict whether an employee will leave the company
-- Identify key factors influencing employee attrition
-- Provide actionable business recommendations for HR
-- Build and evaluate classification models
+This project follows an industry-standard separation of concerns, moving away from monolithic Jupyter Notebooks into scalable Python modules and REST APIs.
 
-## Dataset
+### 1. System Overview Diagram
+```mermaid
+graph TD
+    User([HR Management System / Dashboard])
+    API[FastAPI Application]
+    Pre[Data Pipeline]
+    Model[(Trained ML Model)]
+    Explain[SHAP Explainer]
+    
+    User -- "POST Employee JSON" --> API
+    API -- "Validate Input" --> Pre
+    Pre -- "Clean & Encode" --> Model
+    Model -- "Predict Attrition %" --> Explain
+    Explain -- "Feature Impact" --> API
+    API -- "Return JSON Strategy" --> User
+```
 
-- Source: Kaggle HR Analytics Dataset
-- Records: 14,999 employees
-- Features include:
-- Satisfaction level
-- Last evaluation
-- Number of projects
-- Monthly working hours
-- Tenure
-- Department
-- Salary
-- Promotion history
-- Work accidents
+### 2. ML & Data Pipeline Diagram
+```mermaid
+flowchart LR
+    A[Raw HR Data] --> B[Data Cleaning]
+    B --> C[Feature Engineering]
+    C --> D[One-Hot Encoding]
+    D --> E[Train Random Forest / XGBoost]
+    E --> F[Evaluate Metrics & Save Model]
+```
 
-## Tools & Technologies
+---
 
-- Python
-- Pandas, NumPy
-- Matplotlib, Seaborn
-- Scikit-learn
-- XGBoost
-- Jupyter Notebook
+## 📊 Visualizations & Model Insights
 
-## Key Steps
-###  1. Data Cleaning & Preprocessing
-- Removed duplicates
-- Renamed columns
-- Handled outliers
-- Encoded categorical variables
+*Note: The model was trained heavily on Google Colab to preserve local resources. The visual outputs of the training process are listed below:*
 
-### 2. Exploratory Data Analysis (EDA)
-- Analyzed relationships between working hours, satisfaction & attrition
-- Identified overworked employees
-- Visualized trends using boxplots, histograms, and heatmaps
+### Confusion Matrix
+*(Shows True/False Positives vs. Negatives)*
+![Confusion Matrix](./visuals/confusion_matrix.png)
 
-### 3. Model Building
-- Implemented and compared:
-- Logistic Regression
-- Decision Tree
-- Random Forest
+### Feature Importance (Global)
+*(Which factors impact the whole company the most?)*
+![Feature Importance](./visuals/feature_importance.png)
 
-Performed:
-- Hyperparameter tuning
-- Cross-validation
-- Feature engineering (created overworked feature)
+### SHAP Plot (Local)
+*(Granular look at continuous impact direction on predictions)*
+![SHAP Plot](./visuals/shap_summary.png)
 
-### 4. Model Evaluation
-Metrics used:
-- Accuracy
-- Precision
-- Recall
-- F1-score
-- AUC
+### Top 10 High-Risk Employees
+*(Daily calculated ranking of highest attrition probability)*
+![High Risk Table](./visuals/high_risk_table.png)
 
-## Best Model: Random Forest
-Achieved strong performance with high AUC and accuracy.
+---
 
-## Key Insights
-- Overworked employees are more likely to leave
-- High project load + long working hours reduce retention
-- Employees with tenure above 6 years are less likely to quit
-- Promotion and workload balance strongly affect attrition
+## 📂 Project Structure
+
+```text
+HR-Retention-System/
+│
+├── src/                        # Machine Learning pipeline source code
+│   ├── data_preprocessing.py   # Data cleaning functions
+│   ├── feature_engineering.py  # Categorical encoding handling
+│   └── predict.py              # ML Inference and SHAP explanations
+│
+├── api/                        # API Deployment
+│   └── main.py                 # FastAPI endpoints
+│
+├── models/                     # Saved Models
+│   └── model.pkl               # Generated offline (e.g. Google Colab)
+│
+├── notebooks/                  # Training scripts
+│   └── training.ipynb          # Original Jupyter Notebooks
+│
+├── requirements.txt            # Environment dependencies
+└── README.md                   # You are here
+```
+
+---
+
+## 🚀 How to Run the API Locally
+
+**Prerequisites:**
+You need Python 3.9+ installed on your machine. Ensure you have the `model.pkl` downloaded from your Colab training and placed inside the `/models` directory.
+
+1. **Install Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. **Run the Server**
+   ```bash
+   uvicorn api.main:app --reload
+   ```
+
+3. **Interact with the API**
+   - Head over to `http://127.0.0.1:8000/docs` in your browser.
+   - You will see the auto-generated Swagger UI where you can test the `POST /predict` endpoint live.
+
+---
+
+## 🔮 Future Enhancements (Production Readiness)
+While this current setup perfectly demonstrates a modular deployment and inference pipeline, taking this to a full enterprise-level environment would involve:
+- **MLOps (MLFlow)**: Implementing MLflow to track model experiments, hyperparameters, and dataset versions.
+- **Containerization (Docker)**: Wrapping the API into a Docker image for standard agnostic deployment across Kubernetes or AWS ECS.
+- **CI/CD (GitHub Actions)**: Establishing automated formatting (Black/Ruff) and unit testing (Pytest) on every repository push to maintain code quality.
