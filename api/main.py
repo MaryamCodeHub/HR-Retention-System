@@ -14,8 +14,12 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Load the model and encoder at startup
-model, explainer, encoder = load_model("models/model.pkl", "models/encoder.pkl")
+# Load the model, encoder, and feature column order at startup
+model, explainer, encoder, feature_cols = load_model(
+    "models/model.pkl", 
+    "models/encoder.pkl",
+    "models/feature_columns.pkl"
+)
 
 # Pydantic Model strictly constrains allowed values to prevent "Garbage In, Garbage Out".
 class EmployeeData(BaseModel):
@@ -36,13 +40,13 @@ def predict_attrition(employee: EmployeeData):
     return top driving factors using SHAP values.
     # Note: Removed 'async def' to avoid blocking issues during CPU-intensive SHAP/Prediction steps.
     """
-    if model is None or encoder is None:
-        logger.error("Failed to execute prediction - ML assets (model/encoder) are missing.")
+    if model is None or encoder is None or feature_cols is None:
+        logger.error("Failed to execute prediction - ML assets (model/encoder/features) are missing.")
         raise HTTPException(status_code=500, detail="Server misconfiguration: Models are currently unavailable.")
 
     try:
         emp_dict = employee.model_dump() # Pydantic v2 compliant (used to be .dict())
-        result = predict_employee_attrition(model, explainer, encoder, emp_dict)
+        result = predict_employee_attrition(model, explainer, encoder, feature_cols, emp_dict)
         return result
     except Exception as e:
         # Secure Error Handling: Log internally, generic error externally.

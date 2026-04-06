@@ -1,8 +1,7 @@
-fastapi==0.103.1
-uvicorn==0.23.2
-pydantic==2.3.0
-pandas==2.0.3
-scikit-learn==1.3.0
-xgboost==1.7.6
-shap==0.42.1
-# Note: You can replace this file with `pip freeze > requirements.txt` from your Google Colab environment.
+fastapi
+uvicorn
+pydantic
+pandas
+scikit-learn
+xgboost
+shap
