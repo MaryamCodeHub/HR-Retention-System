@@ -1,6 +1,6 @@
-# 🚀 Predictive HR Attrition System: An AI-Powered Retention Tool
+#  Predictive HR Attrition System: An AI-Powered Retention Tool
 
-## 🎯 The Business Problem & Project Impact
+## The Business Problem & Project Impact
 Employee turnover is extremely costly. When experienced employees leave unexpectedly, companies lose institutional knowledge, project momentum, and face high recruitment and training costs. 
 
 **This project solves that problem** by moving from reactive HR practices to **Proactive AI-Driven Retention**. 
@@ -8,7 +8,7 @@ Instead of conducting "exit interviews" after the damage is done, this Machine L
 
 ---
 
-## 🏗 System Architecture & Data Flow
+## System Architecture & Data Flow
 
 This project follows an industry-standard separation of concerns, moving away from monolithic Jupyter Notebooks into scalable Python modules and production-grade REST APIs.
 
@@ -41,7 +41,7 @@ flowchart LR
 
 ---
 
-## 📊 Visualizations & Model Insights
+##  Visualizations & Model Insights
 
 *Visualizations generated during the Exploratory Data Analysis (EDA) and Model Training process in notebooks:*
 
@@ -59,7 +59,7 @@ flowchart LR
 
 ---
 
-## 📂 Complete Project Structure
+##  Complete Project Structure
 
 ```text
 HR-Retention-System/
@@ -91,7 +91,7 @@ HR-Retention-System/
 
 ---
 
-## 💻 Tech Stack
+##  Tech Stack
 - **Machine Learning**: Scikit-Learn, XGBoost, Pandas, Numpy
 - **Explainable AI**: SHAP (SHapley Additive exPlanations)
 - **Backend / API**: FastAPI, Uvicorn, Pydantic
@@ -99,7 +99,7 @@ HR-Retention-System/
 
 ---
 
-## 🚀 How to Run the API Locally
+##  How to Run the API Locally
 
 **Prerequisites:** Python 3.9+ installed on your machine.
 
@@ -125,7 +125,7 @@ HR-Retention-System/
 
 ---
 
-## 🔮 Future Enhancements (Production Readiness)
+##  Future Enhancements (Production Readiness)
 While this current setup perfectly demonstrates a modular deployment and inference pipeline, taking this to a full enterprise-level environment would involve:
 - **AI Agentic Layer**: Using GenAI (LLMs) to automatically draft personalized email/strategy interventions based on SHAP factors.
 - **Containerization (Docker)**: Wrapping the API into a Docker image for standard agnostic deployment.
